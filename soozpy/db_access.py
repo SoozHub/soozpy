@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
-from models import CoinMarketCapData
+from soozpy.models import CoinMarketCapData
 
 
 def create_session():
@@ -26,7 +26,8 @@ def query_historical_prices(from_date, to_date, symbols=None):
     try:
         query = session.query(CoinMarketCapData)
 
-        if symbols and symbols.lower() != 'all':
+        # Check if a specific list of symbols is provided
+        if symbols is not None:
             query = query.filter(CoinMarketCapData.symbol.in_(symbols))
 
         query = query.filter(
