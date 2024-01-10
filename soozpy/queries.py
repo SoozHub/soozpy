@@ -9,11 +9,10 @@ def get_historical_prices(from_date, to_date, symbols=None):
     # Convert the results to a DataFrame
     if results:
         df = pd.DataFrame([{
-            'id': r.id,
             'symbol': r.symbol,
             'datetime': r.datetime,
             'price': r.price,
-            'volume_24h': r.volume_24h
+            'volume': r.volume_24h
         } for r in results])
     else:
         df = pd.DataFrame()
