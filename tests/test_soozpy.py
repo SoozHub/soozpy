@@ -1,10 +1,12 @@
 import unittest
-from soozpy.queries import get_historical_prices
+from soozpy.queries import get_historical_prices, get_latest_prices
 from datetime import datetime
 import pandas as pd
 
 
 class TestSoozPy(unittest.TestCase):
+
+    # get_historical_prices tests
 
     def test_get_historical_prices_normal(self):
         """ Test get_historical_prices with standard parameters """
@@ -40,8 +42,37 @@ class TestSoozPy(unittest.TestCase):
         self.assertIsInstance(result, pd.DataFrame)
         self.assertEqual(len(result), 0)
 
-    # Add more test cases as needed, for example, testing invalid date ranges,
-    # testing the handling of invalid symbol inputs, etc.
+    # get_latest_price tests
+
+    def test_get_latest_prices_specific_symbols(self):
+        """ Test get_latest_price with specific symbols """
+        symbols = ['BTC', 'ETH']
+
+        result = get_latest_prices(symbols)
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertNotEqual(len(result), 0)
+        self.assertTrue(all(symbol in symbols for symbol in result['symbol'].unique()))
+
+    def test_get_latest_prices_all_symbols(self):
+        """ Test get_latest_price with 'all' symbols """
+        result = get_latest_prices()
+        self.assertIsInstance(result, pd.DataFrame)
+
+        # Check if DataFrame is not empty and has 'symbol' column
+        if not result.empty and 'symbol' in result.columns:
+            self.assertTrue(len(result['symbol'].unique()) > 1)
+        else:
+            self.fail("DataFrame is empty or missing 'symbol' column")
+
+    def test_get_latest_prices_no_results(self):
+        """ Test get_latest_price when there are no results """
+        # Assuming a scenario where no results would be returned
+        # This may depend on the setup of your database and data availability
+        symbols = ['NON_EXISTENT_SYMBOL']
+
+        result = get_latest_prices(symbols)
+        self.assertIsInstance(result, pd.DataFrame)
+        self.assertEqual(len(result), 0)
 
 
 if __name__ == '__main__':
