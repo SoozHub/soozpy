@@ -20,7 +20,15 @@ Ensure you have Python 3.x installed on your system. Then install the required p
 pip install -r requirements.txt
 ```
 
-After installation, you can start using SoozPy by importing it into your Python script or Jupyter notebook.
+**3. Configure environment variables**:
+Create a .env file in the root of the project directory and set the database URI. This URI should match the PostgreSQL database configuration:
+```
+SOOZHUB_DB_URI=postgresql://your_username:your_password@your_host:your_port/your_database
+```
+
+Replace your_username, your_password, your_host, your_port, and your_database with the actual PostgreSQL credentials and details.
+
+After completing these steps, you can start using SoozPy by importing it into your Python script or Jupyter notebook.
 
 ## Getting Started
 

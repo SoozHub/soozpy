@@ -38,3 +38,30 @@ def query_historical_prices(from_date, to_date, symbols=None):
         return query.all()
     finally:
         session.close()
+
+
+def query_latest_prices(symbols=None):
+    """
+    Query and return the latest prices for given symbols, or all symbols if none are specified.
+
+    :param symbols: Optional list of symbols to query for. If None, queries all symbols.
+    :return: List of CoinMarketCapData objects representing the latest prices.
+    """
+    session = create_session()
+    try:
+        # Start with a base query
+        query = session.query(CoinMarketCapData)
+
+        # Filter by symbols if provided
+        if symbols is not None:
+            query = query.filter(CoinMarketCapData.symbol.in_(symbols))
+
+        # Order by datetime descending and get the first record for each symbol
+        query = query.order_by(CoinMarketCapData.symbol, CoinMarketCapData.datetime.desc())
+
+        # Using distinct on symbol to get the latest record per symbol
+        latest_prices = query.distinct(CoinMarketCapData.symbol).all()
+
+        return latest_prices
+    finally:
+        session.close()
