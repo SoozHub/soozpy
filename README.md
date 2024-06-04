@@ -1,6 +1,6 @@
 # SoozPy
 
-SoozHub Wrapper: Python-Powered API for Market Insights
+SoozHub API Wrapper: Python-Powered API for Market Insights
 
 ## Installation
 
